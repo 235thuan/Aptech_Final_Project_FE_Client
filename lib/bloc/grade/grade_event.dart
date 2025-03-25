@@ -1,3 +1,5 @@
+import '../../core/models/grade.dart';
+
 // Các sự kiện liên quan đến điểm số
 abstract class GradeEvent {}
 
@@ -57,4 +59,30 @@ class CalculateCumulativeGPAEvent extends GradeEvent {
   final String studentId;
 
   CalculateCumulativeGPAEvent(this.studentId);
+}
+
+// Sự kiện khi tải danh sách điểm số
+class GradesLoadedEvent extends GradeEvent {
+  final List<Grade> grades;
+  GradesLoadedEvent(this.grades);
+}
+
+// Sự kiện khi tính toán điểm trung bình tích lũy
+class CumulativeGPACalculatedEvent extends GradeEvent {
+  final double gpa;
+  CumulativeGPACalculatedEvent(this.gpa);
+}
+
+// Sự kiện khi tải điểm số theo học kỳ
+class SemesterGradesLoadedEvent extends GradeEvent {
+  final String semester;
+  final List<Grade> grades;
+  SemesterGradesLoadedEvent(this.semester, this.grades);
+}
+
+// Sự kiện khi tải điểm số theo năm học
+class AcademicYearGradesLoadedEvent extends GradeEvent {
+  final String academicYear;
+  final List<Grade> grades;
+  AcademicYearGradesLoadedEvent(this.academicYear, this.grades);
 } 

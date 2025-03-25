@@ -1,37 +1,45 @@
-// Model cho thông tin môn học
+// Model cho thông tin khóa học
 class Course {
   final String id;
   final String name;
   final String code;
   final String description;
-  final int credits;
+  final String instructorId;
+  final String instructorName;
   final String instructor;
+  final int credits;
+  final String level;
+  final String duration;
   final int maxStudents;
   final int currentStudents;
-  final String schedule;
-  final String location;
+  final double price;
+  final String status;
   final DateTime startDate;
   final DateTime endDate;
-  final String status; // 'open', 'closed', 'full'
-  final List<String> prerequisites;
-  final double price;
+  final String location;
+  final String createdAt;
+  final String updatedAt;
 
   Course({
     required this.id,
     required this.name,
     required this.code,
     required this.description,
-    required this.credits,
+    required this.instructorId,
+    required this.instructorName,
     required this.instructor,
+    required this.credits,
+    required this.level,
+    required this.duration,
     required this.maxStudents,
     required this.currentStudents,
-    required this.schedule,
-    required this.location,
+    required this.price,
+    required this.status,
     required this.startDate,
     required this.endDate,
-    required this.status,
-    required this.prerequisites,
-    required this.price,
+    required this.location,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
   // Chuyển đổi từ JSON sang đối tượng Course
@@ -41,17 +49,21 @@ class Course {
       name: json['name'],
       code: json['code'],
       description: json['description'],
-      credits: json['credits'],
+      instructorId: json['instructorId'],
+      instructorName: json['instructorName'],
       instructor: json['instructor'],
+      credits: json['credits'],
+      level: json['level'],
+      duration: json['duration'],
       maxStudents: json['maxStudents'],
       currentStudents: json['currentStudents'],
-      schedule: json['schedule'],
-      location: json['location'],
+      price: json['price'].toDouble(),
+      status: json['status'],
       startDate: DateTime.parse(json['startDate']),
       endDate: DateTime.parse(json['endDate']),
-      status: json['status'],
-      prerequisites: List<String>.from(json['prerequisites']),
-      price: json['price'].toDouble(),
+      location: json['location'],
+      createdAt: json['createdAt'],
+      updatedAt: json['updatedAt'],
     );
   }
 
@@ -62,17 +74,21 @@ class Course {
       'name': name,
       'code': code,
       'description': description,
-      'credits': credits,
+      'instructorId': instructorId,
+      'instructorName': instructorName,
       'instructor': instructor,
+      'credits': credits,
+      'level': level,
+      'duration': duration,
       'maxStudents': maxStudents,
       'currentStudents': currentStudents,
-      'schedule': schedule,
-      'location': location,
+      'price': price,
+      'status': status,
       'startDate': startDate.toIso8601String(),
       'endDate': endDate.toIso8601String(),
-      'status': status,
-      'prerequisites': prerequisites,
-      'price': price,
+      'location': location,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
     };
   }
 
@@ -82,34 +98,42 @@ class Course {
     String? name,
     String? code,
     String? description,
-    int? credits,
+    String? instructorId,
+    String? instructorName,
     String? instructor,
+    int? credits,
+    String? level,
+    String? duration,
     int? maxStudents,
     int? currentStudents,
-    String? schedule,
-    String? location,
+    double? price,
+    String? status,
     DateTime? startDate,
     DateTime? endDate,
-    String? status,
-    List<String>? prerequisites,
-    double? price,
+    String? location,
+    String? createdAt,
+    String? updatedAt,
   }) {
     return Course(
       id: id ?? this.id,
       name: name ?? this.name,
       code: code ?? this.code,
       description: description ?? this.description,
-      credits: credits ?? this.credits,
+      instructorId: instructorId ?? this.instructorId,
+      instructorName: instructorName ?? this.instructorName,
       instructor: instructor ?? this.instructor,
+      credits: credits ?? this.credits,
+      level: level ?? this.level,
+      duration: duration ?? this.duration,
       maxStudents: maxStudents ?? this.maxStudents,
       currentStudents: currentStudents ?? this.currentStudents,
-      schedule: schedule ?? this.schedule,
-      location: location ?? this.location,
+      price: price ?? this.price,
+      status: status ?? this.status,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
-      status: status ?? this.status,
-      prerequisites: prerequisites ?? this.prerequisites,
-      price: price ?? this.price,
+      location: location ?? this.location,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 }

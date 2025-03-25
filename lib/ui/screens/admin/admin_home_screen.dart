@@ -1,66 +1,85 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../bloc/auth/auth_bloc.dart';
-import '../../../bloc/auth/auth_event.dart';
-import '../../widgets/base_home_layout.dart';
-import '../../screens/feed_screen.dart';
-import '../../screens/settings_screen.dart';
-import '../../screens/personal_info_screen.dart';
-import '../../screens/notifications_screen.dart';
-import '../../screens/reports_screen.dart';
-import 'student_management_screen.dart';
-import 'teacher_management_screen.dart';
+import '../../widgets/admin/admin_drawer.dart';
+import 'dashboard_screen.dart';
+import 'user_management_screen.dart';
 import 'course_management_screen.dart';
-import 'class_management_screen.dart';
-import 'grade_management_screen.dart';
+import 'system_settings_screen.dart';
 
-// Màn hình chính cho quản trị viên
-class AdminHomeScreen extends StatelessWidget {
+// Màn hình chính cho admin
+class AdminHomeScreen extends StatefulWidget {
   const AdminHomeScreen({super.key});
 
   @override
+  State<AdminHomeScreen> createState() => _AdminHomeScreenState();
+}
+
+class _AdminHomeScreenState extends State<AdminHomeScreen> {
+  int _selectedIndex = 0;
+
+  // Danh sách các màn hình
+  final List<Widget> _screens = [
+    const DashboardScreen(),
+    const UserManagementScreen(),
+    const CourseManagementScreen(),
+    const SystemSettingsScreen(),
+  ];
+
+  @override
   Widget build(BuildContext context) {
-    return BaseHomeLayout(
-      title: 'Trang chủ Quản trị viên',
-      screens: [
-        const FeedScreen(),
-        const StudentManagementScreen(),
-        const TeacherManagementScreen(),
-        const CourseManagementScreen(),
-        const ClassManagementScreen(),
-        const GradeManagementScreen(),
-        const ReportsScreen(),
-        const NotificationsScreen(),
-        const SettingsScreen(),
-        const PersonalInfoScreen(),
-      ],
-      navigationItems: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Trang chủ',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.people),
-          label: 'Học sinh',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.school),
-          label: 'Giáo viên',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.book),
-          label: 'Khóa học',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: 'Cá nhân',
-        ),
-      ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Quản trị hệ thống'),
+        actions: [
+          // Nút thông báo
+          IconButton(
+            icon: const Icon(Icons.notifications),
+            onPressed: () {
+              // TODO: Implement notifications
+            },
+          ),
+          // Nút tìm kiếm
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              // TODO: Implement search
+            },
+          ),
+        ],
+      ),
+      drawer: const AdminDrawer(),
+      body: _screens[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        type: BottomNavigationBarType.fixed, // Cho phép hiển thị nhiều hơn 3 items
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.dashboard),
+            label: 'Tổng quan',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.people),
+            label: 'Quản lý người dùng',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.book),
+            label: 'Quản lý khóa học',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Cài đặt hệ thống',
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // TODO: Implement notification action
+          // TODO: Implement quick action
         },
-        child: const Icon(Icons.notifications),
+        child: const Icon(Icons.add),
       ),
     );
   }

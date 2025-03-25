@@ -7,6 +7,7 @@ import '../../bloc/timetable/timetable_bloc.dart';
 import '../../bloc/timetable/timetable_event.dart';
 import '../../bloc/timetable/timetable_state.dart';
 import '../../core/models/timetable.dart';
+import '../../core/services/mock_data_service.dart';
 
 // Màn hình hiển thị thời khóa biểu
 class TimetableScreen extends StatefulWidget {
@@ -37,22 +38,9 @@ class _TimetableScreenState extends State<TimetableScreen>
   }
 
   void _loadTimetable() {
-    final authState = context.read<AuthBloc>().state;
-    if (authState is AuthAuthenticated) {
-      context.read<TimetableBloc>().add(GetStudentTimetableEvent(authState.student.id));
-      context.read<TimetableBloc>().add(GetTimetableByDateEvent(
-        studentId: authState.student.id,
-        date: _selectedDate,
-      ));
-      context.read<TimetableBloc>().add(GetTimetableByWeekEvent(
-        studentId: authState.student.id,
-        weekStart: _selectedWeekStart,
-      ));
-      context.read<TimetableBloc>().add(GetTimetableByMonthEvent(
-        studentId: authState.student.id,
-        monthStart: _selectedMonthStart,
-      ));
-    }
+    // Sử dụng mock data thay vì gọi API
+    final mockTimetable = MockDataService.getMockTimetable();
+    context.read<TimetableBloc>().add(TimetableLoadedEvent(mockTimetable));
   }
 
   @override
@@ -96,7 +84,7 @@ class _TimetableScreenState extends State<TimetableScreen>
               builder: (context, state) {
                 if (state is TimetableLoading) {
                   return const Center(child: CircularProgressIndicator());
-                } else if (state is TimetableByDateLoaded) {
+                } else if (state is TimetableLoaded) {
                   return Column(
                     children: [
                       _buildDatePicker(),
@@ -112,7 +100,7 @@ class _TimetableScreenState extends State<TimetableScreen>
               builder: (context, state) {
                 if (state is TimetableLoading) {
                   return const Center(child: CircularProgressIndicator());
-                } else if (state is TimetableByWeekLoaded) {
+                } else if (state is TimetableLoaded) {
                   return Column(
                     children: [
                       _buildWeekPicker(),

@@ -1,3 +1,5 @@
+import '../../core/models/course.dart';
+
 // Các sự kiện liên quan đến môn học
 abstract class CourseEvent {}
 
@@ -49,4 +51,16 @@ class CheckPrerequisitesEvent extends CourseEvent {
     required this.studentId,
     required this.courseId,
   });
+}
+
+// Sự kiện khi tải danh sách môn học có thể đăng ký thành công
+class AvailableCoursesLoadedEvent extends CourseEvent {
+  final List<Course> courses;
+  AvailableCoursesLoadedEvent(this.courses);
+}
+
+// Sự kiện khi tải danh sách môn học đã đăng ký thành công
+class RegisteredCoursesLoadedEvent extends CourseEvent {
+  final List<Course> courses;
+  RegisteredCoursesLoadedEvent(this.courses);
 } 

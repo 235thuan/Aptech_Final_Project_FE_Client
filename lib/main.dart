@@ -7,10 +7,8 @@ import 'bloc/course/course_bloc.dart';
 import 'bloc/timetable/timetable_bloc.dart';
 import 'bloc/grade/grade_bloc.dart';
 import 'bloc/user/user_bloc.dart';
+import 'bloc/assignment/assignment_bloc.dart';
 import 'core/services/auth_service.dart';
-import 'core/services/course_service.dart';
-import 'core/services/timetable_service.dart';
-import 'core/services/grade_service.dart';
 import 'core/services/user_service.dart';
 import 'core/services/navigation_service.dart';
 import 'ui/screens/auth/login_screen.dart';
@@ -34,13 +32,16 @@ class MyApp extends StatelessWidget {
           create: (context) => UserBloc(UserService()),
         ),
         BlocProvider(
-          create: (context) => CourseBloc(CourseService()),
+          create: (context) => CourseBloc(),
         ),
         BlocProvider(
-          create: (context) => TimetableBloc(TimetableService()),
+          create: (context) => TimetableBloc(),
         ),
         BlocProvider(
-          create: (context) => GradeBloc(GradeService()),
+          create: (context) => GradeBloc(),
+        ),
+        BlocProvider(
+          create: (context) => AssignmentBloc(),
         ),
       ],
       child: MaterialApp(
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
         ),
         home: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
-            if (state is AuthInitial) {
+            if (state is AuthInitial || state is AuthLoading) {
               return const SplashScreen();
             } else if (state is AuthAuthenticated) {
               return NavigationService.getHomeScreenByRole(state.role);

@@ -6,6 +6,7 @@ import '../../bloc/grade/grade_bloc.dart';
 import '../../bloc/grade/grade_event.dart';
 import '../../bloc/grade/grade_state.dart';
 import '../../core/models/grade.dart';
+import '../../core/services/mock_data_service.dart';
 
 // Màn hình hiển thị điểm số
 class GradeScreen extends StatefulWidget {
@@ -35,19 +36,10 @@ class _GradeScreenState extends State<GradeScreen>
   }
 
   void _loadGrades() {
-    final authState = context.read<AuthBloc>().state;
-    if (authState is AuthAuthenticated) {
-      context.read<GradeBloc>().add(GetStudentGradesEvent(authState.student.id));
-      context.read<GradeBloc>().add(GetGradesBySemesterEvent(
-        studentId: authState.student.id,
-        semester: _selectedSemester,
-      ));
-      context.read<GradeBloc>().add(GetGradesByAcademicYearEvent(
-        studentId: authState.student.id,
-        academicYear: _selectedAcademicYear,
-      ));
-      context.read<GradeBloc>().add(CalculateCumulativeGPAEvent(authState.student.id));
-    }
+    // Sử dụng mock data thay vì gọi API
+    final mockGrades = MockDataService.getMockGrades();
+    context.read<GradeBloc>().add(GradesLoadedEvent(mockGrades));
+    context.read<GradeBloc>().add(CumulativeGPACalculatedEvent(8.8));
   }
 
   @override
@@ -96,11 +88,11 @@ class _GradeScreenState extends State<GradeScreen>
               builder: (context, state) {
                 if (state is GradeLoading) {
                   return const Center(child: CircularProgressIndicator());
-                } else if (state is GradesBySemesterLoaded) {
+                } else if (state is GradesLoaded) {
                   return Column(
                     children: [
                       _buildSemesterPicker(),
-                      _buildSemesterGPA(state.semester),
+                      _buildSemesterGPA(state.grades),
                       Expanded(child: _buildGradesList(state.grades)),
                     ],
                   );
@@ -113,7 +105,7 @@ class _GradeScreenState extends State<GradeScreen>
               builder: (context, state) {
                 if (state is GradeLoading) {
                   return const Center(child: CircularProgressIndicator());
-                } else if (state is GradesByAcademicYearLoaded) {
+                } else if (state is GradesLoaded) {
                   return Column(
                     children: [
                       _buildAcademicYearPicker(),
@@ -159,32 +151,30 @@ class _GradeScreenState extends State<GradeScreen>
     );
   }
 
-  Widget _buildSemesterGPA(String semester) {
-    return BlocBuilder<GradeBloc, GradeState>(
-      builder: (context, state) {
-        if (state is SemesterGPACalculated && state.semester == semester) {
-          return Card(
-            margin: const EdgeInsets.all(8.0),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  Text(
-                    'Điểm trung bình học kỳ $semester',
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    state.gpa.toStringAsFixed(2),
-                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
+  Widget _buildSemesterGPA(List<Grade> grades) {
+    final semesterGrades = grades.where((g) => g.semester == _selectedSemester).toList();
+    if (semesterGrades.isEmpty) return const SizedBox.shrink();
+
+    final average = semesterGrades.map((g) => g.averageScore).reduce((a, b) => a + b) / semesterGrades.length;
+
+    return Card(
+      margin: const EdgeInsets.all(8.0),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Text(
+              'Điểm trung bình học kỳ $_selectedSemester',
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-          );
-        }
-        return const SizedBox.shrink();
-      },
+            const SizedBox(height: 8),
+            Text(
+              average.toStringAsFixed(2),
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ),
     );
   }
 

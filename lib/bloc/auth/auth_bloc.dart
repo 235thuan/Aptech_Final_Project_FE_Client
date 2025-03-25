@@ -22,7 +22,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     try {
+      // Emit trạng thái loading ngay khi bắt đầu kiểm tra
       emit(AuthLoading());
+      
       final user = await _authService.getCurrentUser();
       if (user != null) {
         emit(AuthAuthenticated(
@@ -83,19 +85,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     try {
       emit(AuthLoading());
-      final user = await _authService.register(
-        event.email,
-        event.password,
-        event.name,
-      );
-      emit(AuthAuthenticated(
-        userId: user.id,
-        email: user.email,
-        role: user.role,
-        name: user.name,
-        avatar: user.avatar,
-        student: user,
-      ));
+      final user = await _authService.register(event.email, event.password, event.name);
+      emit(AuthRegistered(user));
     } catch (e) {
       emit(AuthError('Lỗi đăng ký: $e'));
     }
@@ -108,10 +99,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     try {
       emit(AuthLoading());
-      await _authService.changePassword(
-        event.currentPassword,
-        event.newPassword,
-      );
+      await _authService.changePassword(event.currentPassword, event.newPassword);
       emit(AuthPasswordChanged());
     } catch (e) {
       emit(AuthError('Lỗi đổi mật khẩu: $e'));

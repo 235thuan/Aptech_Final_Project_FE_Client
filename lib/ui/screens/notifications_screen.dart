@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/services/mock_data_service.dart';
 
 // Màn hình thông báo
 class NotificationsScreen extends StatelessWidget {
@@ -6,28 +7,32 @@ class NotificationsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Lấy mock data
+    final notifications = MockDataService.getMockNotifications();
+
     return ListView.builder(
       padding: const EdgeInsets.all(16),
-      itemCount: 10, // Số lượng thông báo mẫu
+      itemCount: notifications.length,
       itemBuilder: (context, index) {
+        final notification = notifications[index];
         return Card(
           margin: const EdgeInsets.only(bottom: 8),
           child: ListTile(
             leading: CircleAvatar(
-              backgroundColor: _getNotificationColor(index),
+              backgroundColor: _getNotificationColor(notification.type),
               child: Icon(
-                _getNotificationIcon(index),
+                _getNotificationIcon(notification.type),
                 color: Colors.white,
               ),
             ),
-            title: Text(_getNotificationTitle(index)),
+            title: Text(notification.title),
             subtitle: Text(
-              _getNotificationContent(index),
+              notification.content,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
             trailing: Text(
-              _getNotificationTime(index),
+              _getNotificationTime(notification.createdAt),
               style: const TextStyle(
                 color: Colors.grey,
                 fontSize: 12,
@@ -42,58 +47,52 @@ class NotificationsScreen extends StatelessWidget {
     );
   }
 
-  Color _getNotificationColor(int index) {
-    final colors = [
-      Colors.blue,
-      Colors.green,
-      Colors.orange,
-      Colors.red,
-      Colors.purple,
-    ];
-    return colors[index % colors.length];
+  Color _getNotificationColor(String type) {
+    switch (type) {
+      case 'general':
+        return Colors.blue;
+      case 'assignment':
+        return Colors.green;
+      case 'grade':
+        return Colors.orange;
+      case 'event':
+        return Colors.purple;
+      case 'message':
+        return Colors.red;
+      default:
+        return Colors.grey;
+    }
   }
 
-  IconData _getNotificationIcon(int index) {
-    final icons = [
-      Icons.notifications,
-      Icons.assignment,
-      Icons.grade,
-      Icons.event,
-      Icons.message,
-    ];
-    return icons[index % icons.length];
+  IconData _getNotificationIcon(String type) {
+    switch (type) {
+      case 'general':
+        return Icons.notifications;
+      case 'assignment':
+        return Icons.assignment;
+      case 'grade':
+        return Icons.grade;
+      case 'event':
+        return Icons.event;
+      case 'message':
+        return Icons.message;
+      default:
+        return Icons.notifications;
+    }
   }
 
-  String _getNotificationTitle(int index) {
-    final titles = [
-      'Thông báo mới',
-      'Bài tập mới',
-      'Điểm số đã được cập nhật',
-      'Sự kiện sắp tới',
-      'Tin nhắn mới',
-    ];
-    return titles[index % titles.length];
-  }
+  String _getNotificationTime(DateTime createdAt) {
+    final now = DateTime.now();
+    final difference = now.difference(createdAt);
 
-  String _getNotificationContent(int index) {
-    final contents = [
-      'Có một thông báo mới từ giáo viên',
-      'Bài tập môn học đã được đăng',
-      'Điểm số của bạn đã được cập nhật',
-      'Có một sự kiện sắp diễn ra',
-      'Bạn có tin nhắn mới từ bạn học',
-    ];
-    return contents[index % contents.length];
-  }
-
-  String _getNotificationTime(int index) {
-    final times = [
-      '5 phút trước',
-      '1 giờ trước',
-      '2 giờ trước',
-      '1 ngày trước',
-      '2 ngày trước',
-    ];
-    return times[index % times.length];
+    if (difference.inMinutes < 60) {
+      return '${difference.inMinutes} phút trước';
+    } else if (difference.inHours < 24) {
+      return '${difference.inHours} giờ trước';
+    } else if (difference.inDays < 7) {
+      return '${difference.inDays} ngày trước';
+    } else {
+      return '${createdAt.day}/${createdAt.month}/${createdAt.year}';
+    }
   }
 } 

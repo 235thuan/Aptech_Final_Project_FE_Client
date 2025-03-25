@@ -1,11 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../models/student.dart';
 import '../enums/user_role.dart';
-import '../../bloc/auth/auth_bloc.dart';
-import '../../bloc/auth/auth_event.dart';
-import '../../bloc/auth/auth_state.dart';
-import 'mock_data_service.dart';
+
 
 // Service xử lý xác thực người dùng
 class AuthService {
@@ -144,6 +140,9 @@ class AuthService {
   // Lấy thông tin người dùng hiện tại
   Future<Student?> getCurrentUser() async {
     try {
+      // Thêm delay 2 giây để hiển thị SplashScreen animation
+      await Future.delayed(const Duration(seconds: 2));
+      
       // TODO: Lấy thông tin từ local storage hoặc API
       // Tạm thời trả về null để yêu cầu đăng nhập
       return null;
@@ -152,4 +151,4 @@ class AuthService {
       return null;
     }
   }
-} 
+}

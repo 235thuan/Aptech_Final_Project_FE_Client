@@ -6,6 +6,7 @@ import '../../bloc/course/course_bloc.dart';
 import '../../bloc/course/course_event.dart';
 import '../../bloc/course/course_state.dart';
 import '../../core/models/course.dart';
+import '../../core/services/mock_data_service.dart';
 import 'package:intl/intl.dart';
 
 // Màn hình đăng ký môn học
@@ -36,31 +37,24 @@ class _CourseRegistrationScreenState extends State<CourseRegistrationScreen>
   }
 
   void _loadCourses() {
-    final authState = context.read<AuthBloc>().state;
-    if (authState is AuthAuthenticated) {
-      context.read<CourseBloc>().add(GetAvailableCoursesEvent());
-      context
-          .read<CourseBloc>()
-          .add(GetRegisteredCoursesEvent(authState.student.id));
-    }
+    // Sử dụng mock data thay vì gọi API
+    final mockCourses = MockDataService.getMockCourses();
+    context.read<CourseBloc>().add(GetAvailableCoursesEvent());
+    context.read<CourseBloc>().add(GetRegisteredCoursesEvent('1')); // Using mock student ID
   }
 
   void _registerCourse(String studentId, Course course) {
-    context.read<CourseBloc>().add(
-          RegisterCourseEvent(
-            studentId: studentId,
-            courseId: course.id,
-          ),
-        );
+    context.read<CourseBloc>().add(RegisterCourseEvent(
+      studentId: studentId,
+      courseId: course.id,
+    ));
   }
 
   void _cancelRegistration(String studentId, Course course) {
-    context.read<CourseBloc>().add(
-          CancelRegistrationEvent(
-            studentId: studentId,
-            courseId: course.id,
-          ),
-        );
+    context.read<CourseBloc>().add(CancelRegistrationEvent(
+      studentId: studentId,
+      courseId: course.id,
+    ));
   }
 
   @override
@@ -82,16 +76,6 @@ class _CourseRegistrationScreenState extends State<CourseRegistrationScreen>
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message)),
             );
-          } else if (state is CourseRegistered) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Đăng ký môn học thành công')),
-            );
-            _loadCourses();
-          } else if (state is RegistrationCancelled) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Hủy đăng ký môn học thành công')),
-            );
-            _loadCourses();
           }
         },
         child: Column(

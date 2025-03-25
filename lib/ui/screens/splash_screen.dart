@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/auth/auth_bloc.dart';
 import '../../bloc/auth/auth_event.dart';
 import '../../bloc/auth/auth_state.dart';
-import './auth/login_screen.dart';
+import 'auth/login_screen.dart';
 import '../../core/services/navigation_service.dart';
 
 // Màn hình splash hiển thị logo và loading animation
@@ -41,13 +41,6 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     ));
 
     _controller.forward();
-
-    // Kiểm tra trạng thái đăng nhập sau 3 giây
-    Future.delayed(const Duration(seconds: 3), () {
-      if (mounted) {
-        context.read<AuthBloc>().add(CheckAuthStatusEvent());
-      }
-    });
   }
 
   @override
@@ -153,4 +146,4 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       ),
     );
   }
-} 
+}
