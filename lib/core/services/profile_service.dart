@@ -1,5 +1,4 @@
 import '../models/user.dart';
-import '../models/student.dart';
 import 'mock_data_service.dart';
 
 class ProfileService {

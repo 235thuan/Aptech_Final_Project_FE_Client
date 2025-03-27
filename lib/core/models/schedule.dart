@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 // Model cho thông tin lịch giảng dạy
 class Schedule {

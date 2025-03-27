@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 // import '../../../bloc/discussion/discussion_bloc.dart';
 // import '../../../bloc/discussion/discussion_event.dart';
 // import '../../../bloc/discussion/discussion_state.dart';
-import '../../../core/models/discussion.dart';
 import '../../../core/services/mock_data_service.dart';
 
 // Màn hình thảo luận cho giáo viên
@@ -18,7 +16,6 @@ class _DiscussionScreenState extends State<DiscussionScreen> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _contentController = TextEditingController();
-  String _selectedClass = '';
 
   @override
   void initState() {
@@ -26,7 +23,6 @@ class _DiscussionScreenState extends State<DiscussionScreen> {
     // Sử dụng mock data thay vì gọi API
     final mockClasses = MockDataService.getMockClasses();
     if (mockClasses.isNotEmpty) {
-      _selectedClass = mockClasses[0].name;
     }
   }
 

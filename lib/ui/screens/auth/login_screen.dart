@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../bloc/auth/auth_bloc.dart';
 import '../../../bloc/auth/auth_event.dart';
 import '../../../bloc/auth/auth_state.dart';
+import '../../../ui/screens/sample/sample_screen.dart';
+import '../../../ui/screens/student/student_home_screen_v2.dart';
 
 // Màn hình đăng nhập
 class LoginScreen extends StatefulWidget {
@@ -185,6 +187,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               _buildTestRoleButton('Teacher', 'teacher@example.com'),
                               _buildTestRoleButton('Admin', 'admin@example.com'),
                               _buildTestRoleButton('Parent', 'parent@example.com'),
+                              _buildViewSampleButton(),
                             ],
                           ),
                         ],
@@ -212,6 +215,22 @@ class _LoginScreenState extends State<LoginScreen> {
         foregroundColor: Colors.blue,
       ),
       child: Text(role),
+    );
+  }
+
+  Widget _buildViewSampleButton() {
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const StudentHomeScreenV2()),
+        );
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.grey.shade200,
+        foregroundColor: Colors.green,
+      ),
+      child: const Text('Xem giao diện mới'),
     );
   }
 }

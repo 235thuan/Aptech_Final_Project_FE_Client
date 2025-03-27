@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import '../../bloc/auth/auth_bloc.dart';
-import '../../bloc/auth/auth_state.dart';
 import '../../bloc/timetable/timetable_bloc.dart';
 import '../../bloc/timetable/timetable_event.dart';
 import '../../bloc/timetable/timetable_state.dart';
@@ -22,7 +20,6 @@ class _TimetableScreenState extends State<TimetableScreen>
   late TabController _tabController;
   DateTime _selectedDate = DateTime.now();
   DateTime _selectedWeekStart = DateTime.now().subtract(Duration(days: DateTime.now().weekday - 1));
-  DateTime _selectedMonthStart = DateTime(DateTime.now().year, DateTime.now().month, 1);
 
   @override
   void initState() {

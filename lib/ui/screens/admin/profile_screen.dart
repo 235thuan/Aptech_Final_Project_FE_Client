@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../bloc/profile/profile_bloc.dart';
 // import '../../../bloc/profile/profile_event.dart';
 // import '../../../bloc/profile/profile_state.dart';
 import '../../../core/services/mock_data_service.dart';

@@ -4,7 +4,6 @@ import '../models/course.dart';
 import '../models/student.dart';
 import '../models/notification.dart';
 import '../models/assignment.dart';
-import '../models/teacher.dart';
 import '../models/discussion.dart';
 import '../models/learning_material.dart';
 import '../models/child_activity.dart';

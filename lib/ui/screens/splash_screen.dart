@@ -1,10 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../bloc/auth/auth_bloc.dart';
-import '../../bloc/auth/auth_event.dart';
-import '../../bloc/auth/auth_state.dart';
-import 'auth/login_screen.dart';
-import '../../core/services/navigation_service.dart';
 
 // Màn hình splash hiển thị logo và loading animation
 class SplashScreen extends StatefulWidget {

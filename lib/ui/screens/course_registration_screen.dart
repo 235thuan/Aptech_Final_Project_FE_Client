@@ -38,7 +38,7 @@ class _CourseRegistrationScreenState extends State<CourseRegistrationScreen>
 
   void _loadCourses() {
     // Sử dụng mock data thay vì gọi API
-    final mockCourses = MockDataService.getMockCourses();
+    MockDataService.getMockCourses();
     context.read<CourseBloc>().add(GetAvailableCoursesEvent());
     context.read<CourseBloc>().add(GetRegisteredCoursesEvent('1')); // Using mock student ID
   }

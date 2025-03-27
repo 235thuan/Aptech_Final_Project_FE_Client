@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../bloc/settings/settings_bloc.dart';
 // import '../../../bloc/settings/settings_event.dart';
 // import '../../../bloc/settings/settings_state.dart';
-import '../../../core/models/settings.dart';
 import '../../../core/services/mock_data_service.dart';
 
 // Màn hình quản lý cài đặt cho admin

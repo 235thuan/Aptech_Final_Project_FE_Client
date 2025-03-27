@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 // import '../../../bloc/learning_material/learning_material_bloc.dart';
 // import '../../../bloc/learning_material/learning_material_event.dart';
 // import '../../../bloc/learning_material/learning_material_state.dart';
-import '../../../core/models/learning_material.dart';
 import '../../../core/services/mock_data_service.dart';
 
 // Màn hình tài liệu học tập cho giáo viên

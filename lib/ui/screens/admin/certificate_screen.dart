@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 // import '../../../bloc/certificates/certificate_bloc.dart';
 // import '../../../bloc/certificates/certificate_event.dart';
 // import '../../../bloc/certificates/certificate_state.dart';
-import '../../../core/models/certificate.dart';
 import '../../../core/services/mock_data_service.dart';
 
 // Màn hình quản lý chứng chỉ cho admin
