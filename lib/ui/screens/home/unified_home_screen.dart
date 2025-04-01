@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import '../../../core/services/api_service.dart';
 import '../../widgets/common/custom_drawer.dart';
 
 class UnifiedHomeScreen extends StatefulWidget {
   final String userRole;
-  
+
   const UnifiedHomeScreen({
     super.key,
     required this.userRole,
   });
-  
+
   @override
   State<UnifiedHomeScreen> createState() => _UnifiedHomeScreenState();
 }
@@ -78,7 +77,7 @@ class _UnifiedHomeScreenState extends State<UnifiedHomeScreen> {
             // Thêm các categories khác
           ],
         };
-      // Thêm các role khác
+    // Thêm các role khác
       default:
         return {};
     }
@@ -92,19 +91,19 @@ class _UnifiedHomeScreenState extends State<UnifiedHomeScreen> {
 
   Future<void> _loadDashboardData() async {
     if (!mounted) return;
-    
+
     setState(() => _isLoading = true);
     try {
       final data = await _apiService.getStudentDashboard();
       if (!mounted) return;
-      
+
       setState(() {
         _dashboardData = data;
         _isLoading = false;
       });
     } catch (e) {
       if (!mounted) return;
-      
+
       setState(() => _isLoading = false);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -139,71 +138,67 @@ class _UnifiedHomeScreenState extends State<UnifiedHomeScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Carousel
-            CarouselSlider(
-              options: CarouselOptions(
-                height: 200,
-                autoPlay: true,
-                enlargeCenterPage: true,
-                onPageChanged: (index, reason) {
+            // Carousel using PageView
+            SizedBox(
+              height: 200, // You can adjust the height
+              child: PageView.builder(
+                itemCount: _roleConfig['carouselItems']?.length ?? 0,
+                controller: PageController(viewportFraction: 1),
+                onPageChanged: (index) {
                   setState(() {
                     _currentCarouselIndex = index;
                   });
                 },
-              ),
-              items: _roleConfig['carouselItems']?.map<Widget>((item) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return Container(
-                      width: MediaQuery.of(context).size.width,
-                      margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                itemBuilder: (context, index) {
+                  final item = _roleConfig['carouselItems'][index];
+                  return Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      image: DecorationImage(
+                        image: AssetImage(item['image']),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
-                        image: DecorationImage(
-                          image: AssetImage(item['image']),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.transparent,
-                              Colors.black.withOpacity(0.7),
-                            ],
-                          ),
-                        ),
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              item['title'],
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              item['description'],
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                              ),
-                            ),
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.transparent,
+                            Colors.black.withOpacity(0.7),
                           ],
                         ),
                       ),
-                    );
-                  },
-                );
-              }).toList() ?? [],
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            item['title'],
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            item['description'],
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
 
             // Categories Grid
@@ -279,4 +274,4 @@ class _UnifiedHomeScreenState extends State<UnifiedHomeScreen> {
       ),
     );
   }
-} 
+}

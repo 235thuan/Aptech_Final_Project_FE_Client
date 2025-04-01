@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../core/enums/user_role.dart';
-import '../../ui/screens/admin/admin_home_screen.dart';
+// import '../../ui/screens/admin/admin_home_screen_v2.dart';
+import '../../ui/screens/home/unified_home_screen.dart';
+import '../../ui/screens/admin/admin_home_screen_v2.dart';
 import '../../ui/screens/teacher/teacher_home_screen.dart';
 import '../../ui/screens/student/student_home_screen.dart';
 import '../../ui/screens/parent/parent_home_screen.dart';
@@ -11,7 +13,9 @@ class NavigationService {
   static Widget getHomeScreenByRole(UserRole role) {
     switch (role) {
       case UserRole.admin:
-        return const AdminHomeScreen();
+        // return const AdminHomeScreen();
+        //  return const HomeScreen();
+         return const UnifiedHomeScreen(userRole: 'Admin',);
       case UserRole.teacher:
         return const TeacherHomeScreen();
       case UserRole.student:
